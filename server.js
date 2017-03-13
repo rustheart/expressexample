@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const _ = require('underscore');
@@ -12,8 +13,14 @@ let list = [
 ];
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
+/*
+Set Pug as View engine
+Server side rendering
+*/
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
-    res.send({ message: "Hello World" });
+    res.render('home');
 });
 app.get('/item/:name', (req, res) => {
     let name = _.findWhere(list, { name: req.params.name });
